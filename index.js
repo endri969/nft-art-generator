@@ -121,9 +121,9 @@ async function createImage(idx) {
                 }
             ]
         }
-        writeFileSync(`./out/${idx}.json`, JSON.stringify(meta))
-        writeFileSync(`./out/${idx}.svg`, final)
-        svgToPng(idx)
+        // writeFileSync(`./out/${idx}.json`, JSON.stringify(meta))
+        // writeFileSync(`./out/${idx}.svg`, final)
+        // svgToPng(idx)
     }
 
 
