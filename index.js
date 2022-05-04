@@ -1,8 +1,9 @@
 const { readFileSync, writeFileSync, readdirSync, rmSync, existsSync, mkdirSync } = require('fs');
 const sharp = require('sharp');
+const mergeImages = require('merge-images');
 //Chupi is loca, Endri is loco
 const template = `
-    <svg width="256" height="256" viewBox="0 0 256 256" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <svg width="1024" height="768" viewBox="0 0 1024 768" fill="none" xmlns="http://www.w3.org/2000/svg">
         <!-- bg -->
         <!-- skin -->
         <!-- body -->
@@ -50,6 +51,9 @@ function getLayerFull(name,folder, skip=0.0) {
     const layer = svg.match(re)[0];
     return Math.random() > skip ? layer : '';
 }
+function getPath(folder, name){
+    return `./${folder}/${name}.svg`
+}
 function getLayer(name, skip=0.01){
     return getLayerFull(name,"download",skip)
 }
@@ -63,7 +67,7 @@ async function svgToPng(name) {
 }
 
 
-function createImage(idx) {
+async function createImage(idx) {
 
     const bg = randInt(11)+1;
     const tears = randInt(11)+1;
@@ -79,16 +83,30 @@ function createImage(idx) {
         console.log(name)
         face[takenFaces] = face;
 
+        // let images = [];
+        // images.push(getPath("download",`BG${bg}`));
+        // images.push(getPath("download",`SKIN1`));
+        // images.push(getPath("download",`BLUSH`));
+        // images.push(getPath("download",`EYES`));
+        // images.push(getPath("download",`NOSE`));
+        // images.push(getPath("download",`tears${tears}`));
+        // images.push(getPath("download",`OBJ${obj}`));
+        // images.push(getPath("download",`MOUTH${mouth}`));
+        
+
+        const b64 = await mergeImages(images);
+
+        await ImageDataURI.outputFile(b64, "./out2/" + `${idx}.png`);
         const final = template
-            .replace('<!-- bg -->', getLayer(`BG${bg}`))
-            .replace('<!-- skin -->', getLayer('SKIN1'))
+            // .replace('<!-- bg -->', getLayer(`BG${bg}`))
+            // .replace('<!-- skin -->', getLayer('SKIN1'))
             .replace('<!-- body -->', getLayer('BODY'))
             .replace('<!-- blush -->', getLayer('BLUSH'))
             .replace('<!-- eyes -->', getLayer('EYES'))
             .replace('<!-- nose -->', getLayer('NOSE'))
             .replace('<!-- tears -->', getLayer(`tears${tears}`))
-            .replace('<!-- obj -->', getLayer(`OBJ${obj}`))
-            .replace('<!-- mouth -->', getLayer(`MOUTH${mouth}`))
+            // .replace('<!-- obj -->', getLayer(`OBJ${obj}`))
+            // .replace('<!-- mouth -->', getLayer(`MOUTH${mouth}`))
 
         const meta = {
             name,
