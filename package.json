@@ -10,6 +10,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "merge-images": "^2.0.0",
     "sharp": "^0.29.3"
   }
 }
