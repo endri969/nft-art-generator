@@ -48,10 +48,10 @@ function getLayerFull(name,folder, skip=0.0) {
     const svg = readFileSync(`./${folder}/${name}.svg`, 'utf-8');
     const re = /(?<=\<svg\s*[^>]*>)([\s\S]*?)(?=\<\/svg\>)/g
     const layer = svg.match(re)[0];
-    return layer;
+    return Math.random() > skip ? layer : '';
 }
 function getLayer(name, skip=0.01){
-    getLayerFull(name,"download",skip)
+    return getLayerFull(name,"download",skip)
 }
 async function svgToPng(name) {
     const src = `./out/${name}.svg`;
