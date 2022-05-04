@@ -54,7 +54,7 @@ function getLayerFull(name,folder, skip=0.0) {
     return Math.random() > skip ? layer : '';
 }
 function getPath(folder, name){
-    return `./${folder}/${name}.svg`
+    return `./${folder}/${name}.png`
 }
 function getLayer(name, skip=0.01){
     return getLayerFull(name,"download",skip)
@@ -86,14 +86,14 @@ async function createImage(idx) {
         face[takenFaces] = face;
 
         let images = [];
-        images.push(getPath("download",`BG${bg}`));
-        images.push(getPath("download",`SKIN1`));
-        images.push(getPath("download",`BLUSH`));
-        images.push(getPath("download",`EYES`));
-        images.push(getPath("download",`NOSE`));
-        images.push(getPath("download",`tears${tears}`));
-        images.push(getPath("download",`OBJ${obj}`));
-        images.push(getPath("download",`MOUTH${mouth}`));
+        images.push(getPath("layers2",`BG${bg}`));
+        images.push(getPath("layers2",`SKIN`));
+        images.push(getPath("layers2",`BLUSH`));
+        images.push(getPath("layers2",`EYES`));
+        images.push(getPath("layers2",`NOSE`));
+        images.push(getPath("layers2",`tears${tears}`));
+        images.push(getPath("layers2",`OBJ${obj}`));
+        images.push(getPath("layers2",`MOUTH${mouth}`));
         
 
         //Generating images with merge images
