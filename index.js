@@ -4,12 +4,13 @@ const sharp = require('sharp');
 const template = `
     <svg width="256" height="256" viewBox="0 0 256 256" fill="none" xmlns="http://www.w3.org/2000/svg">
         <!-- bg -->
-        <!-- head -->
-        <!-- hair -->
+        <!-- skin -->
+        <!-- body -->
+        <!-- blush -->
         <!-- eyes -->
-        <!-- nose -->
+        <!-- tears -->
+        <!-- obj -->
         <!-- mouth -->
-        <!-- beard -->
     </svg>
 `
 
@@ -43,13 +44,15 @@ function getRandomName() {
     }
 }
 
-function getLayer(name, skip=0.0) {
-    const svg = readFileSync(`./layers/${name}.svg`, 'utf-8');
+function getLayerFull(name,folder, skip=0.0) {
+    const svg = readFileSync(`./${folder}/${name}.svg`, 'utf-8');
     const re = /(?<=\<svg\s*[^>]*>)([\s\S]*?)(?=\<\/svg\>)/g
     const layer = svg.match(re)[0];
-    return Math.random() > skip ? layer : '';
+    return layer;
 }
-
+function getLayer(name, skip=0.01){
+    getLayerFull(name,"download",skip)
+}
 async function svgToPng(name) {
     const src = `./out/${name}.svg`;
     const dest = `./out/${name}.png`;
@@ -62,15 +65,12 @@ async function svgToPng(name) {
 
 function createImage(idx) {
 
-    const bg = randInt(5);
-    const hair = randInt(7);
-    const eyes = randInt(9);
-    const nose = randInt(4); 
-    const mouth = randInt(5);
-    const beard = randInt(3);
-    // 18,900 combinations
+    const bg = randInt(11)+1;
+    const tears = randInt(11)+1;
+    const mouth = randInt(11)+1;
+    const obj = randInt(10)+1;
 
-    const face = [hair, eyes, mouth, nose, beard].join('');
+    const face = [bg, tears, mouth, obj].join('');
 
     if (face[takenFaces]) {
         createImage();
@@ -80,13 +80,15 @@ function createImage(idx) {
         face[takenFaces] = face;
 
         const final = template
-            .replace('<!-- bg -->', getLayer(`bg${bg}`))
-            .replace('<!-- head -->', getLayer('head0'))
-            .replace('<!-- hair -->', getLayer(`hair${hair}`))
-            .replace('<!-- eyes -->', getLayer(`eyes${eyes}`))
-            .replace('<!-- nose -->', getLayer(`nose${nose}`))
-            .replace('<!-- mouth -->', getLayer(`mouth${mouth}`))
-            .replace('<!-- beard -->', getLayer(`beard${beard}`, 0.5))
+            .replace('<!-- bg -->', getLayer(`BG${bg}`))
+            .replace('<!-- skin -->', getLayer('SKIN1'))
+            .replace('<!-- body -->', getLayer('BODY'))
+            .replace('<!-- blush -->', getLayer('BLUSH'))
+            .replace('<!-- eyes -->', getLayer('EYES'))
+            .replace('<!-- nose -->', getLayer('NOSE'))
+            .replace('<!-- tears -->', getLayer(`tears${tears}`))
+            .replace('<!-- obj -->', getLayer(`OBJ${obj}`))
+            .replace('<!-- mouth -->', getLayer(`MOUTH${mouth}`))
 
         const meta = {
             name,
