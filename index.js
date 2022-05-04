@@ -88,6 +88,7 @@ async function createImage(idx) {
         let images = [];
         images.push(getPath("layers2",`BG${bg}`));
         images.push(getPath("layers2",`SKIN`));
+        images.push(getPath("layers2",`BODY`));
         images.push(getPath("layers2",`BLUSH`));
         images.push(getPath("layers2",`EYES`));
         images.push(getPath("layers2",`NOSE`));
