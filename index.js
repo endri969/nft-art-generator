@@ -19,7 +19,7 @@ const template = `
 
 const takenNames = {};
 const takenFaces = {};
-let idx = 999;
+let idx = 10;
 
 function randInt(max) {
     return Math.floor(Math.random() * (max + 1));
@@ -93,9 +93,8 @@ async function createImage(idx) {
         images.push(getPath("layers2",`EYES`));
         images.push(getPath("layers2",`NOSE`));
         images.push(getPath("layers2",`tears${tears}`));
-        images.push(getPath("layers2",`OBJ${obj}`));
         images.push(getPath("layers2",`MOUTH${mouth}`));
-        
+        images.push(getPath("layers2",`OBJ${obj}`));
 
         //Generating images with merge images
         generateImages(images, idx)
