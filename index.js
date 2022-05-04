@@ -1,6 +1,8 @@
 const { readFileSync, writeFileSync, readdirSync, rmSync, existsSync, mkdirSync } = require('fs');
 const sharp = require('sharp');
 const mergeImages = require('merge-images');
+const {Canvas,Image} = require('canvas');
+const ImageDataURI = require('image-data-uri');
 //Chupi is loca, Endri is loco
 const template = `
     <svg width="1024" height="768" viewBox="0 0 1024 768" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -83,20 +85,20 @@ async function createImage(idx) {
         console.log(name)
         face[takenFaces] = face;
 
-        // let images = [];
-        // images.push(getPath("download",`BG${bg}`));
-        // images.push(getPath("download",`SKIN1`));
-        // images.push(getPath("download",`BLUSH`));
-        // images.push(getPath("download",`EYES`));
-        // images.push(getPath("download",`NOSE`));
-        // images.push(getPath("download",`tears${tears}`));
-        // images.push(getPath("download",`OBJ${obj}`));
-        // images.push(getPath("download",`MOUTH${mouth}`));
+        let images = [];
+        images.push(getPath("download",`BG${bg}`));
+        images.push(getPath("download",`SKIN1`));
+        images.push(getPath("download",`BLUSH`));
+        images.push(getPath("download",`EYES`));
+        images.push(getPath("download",`NOSE`));
+        images.push(getPath("download",`tears${tears}`));
+        images.push(getPath("download",`OBJ${obj}`));
+        images.push(getPath("download",`MOUTH${mouth}`));
         
 
-        const b64 = await mergeImages(images);
+        //Generating images with merge images
+        generateImages(images, idx)
 
-        await ImageDataURI.outputFile(b64, "./out2/" + `${idx}.png`);
         const final = template
             // .replace('<!-- bg -->', getLayer(`BG${bg}`))
             // .replace('<!-- skin -->', getLayer('SKIN1'))
@@ -127,6 +129,12 @@ async function createImage(idx) {
 
 }
 
+async function generateImages(images, idx){
+
+    const b64 = await mergeImages(images,{Canvas: Canvas, Image: Image});
+
+    await ImageDataURI.outputFile(b64, "./out2/" + `${idx}.png`);
+}
 
 // Create dir if not exists
 if (!existsSync('./out')){
